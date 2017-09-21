@@ -13,7 +13,7 @@ proxied, all other hosts and ips will not be proxied.
 
 Scripts support:
 - Skipping the same enries
-- Dropping "*." ("good" versions of scripts always check subdomains, other scripts never do that)
+- Dropping "\*." ("good" versions of scripts always check subdomains, other scripts never do that)
 - Dropping start and end dots
 - Dropping last dot in FindProxyForURL
 
@@ -38,12 +38,12 @@ performance.
                                   in hosts will be proxied. For optimizations:
   1. Top-level domain is not checked because it is unlikely that some
      top-level zone will be in the list. If you add "com" or "org" entry
-     into hosts file, "*.com" and "*.org" will not be proxied. But if
-     you add "example.com", "*.example.com" will be proxied.
+     into hosts file, "\*.com" and "\*.org" will not be proxied. But if
+     you add "example.com", "\*.example.com" will be proxied.
   2. Level number is limited by 5. If some hosts have more than 5
      levels, other levels will be dropped, so all subdomains will be
      proxied. Example: 7.6.5.4.3.example.com will be saved as
-     5.4.3.example.com so "*.5.4.3.example.com" will be proxied.
+     5.4.3.example.com so "\*.5.4.3.example.com" will be proxied.
 
 Actually "gen_binSearch_strings_good.js" generator is recommended.
 
@@ -52,5 +52,5 @@ Actually "gen_binSearch_strings_good.js" generator is recommended.
 # Benchmark
 
 ## Running
-node --expose-gc bench output-js/array
-node --expose-gc --noopt --no-always-opt bench output-js/array
+`node --expose-gc bench output-js/array`<br>
+`node --expose-gc --noopt --no-always-opt bench output-js/array`<br>
