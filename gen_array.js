@@ -28,7 +28,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 const funcs = require('./lib/funcs.js'),
-      conf = funcs.parseArgs('output-pac/array.js', 'output-js/array.js');
+      conf = funcs.parseArgs('output-pac/array.pac', 'output-js/array.js');
 
 
 

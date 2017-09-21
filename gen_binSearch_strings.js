@@ -28,7 +28,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 const funcs = require('./lib/funcs.js'),
-      conf = funcs.parseArgs('output-pac/binSearch_string.js', 'output-js/binSearch_string.js');
+      conf = funcs.parseArgs('output-pac/binSearch_string.pac', 'output-js/binSearch_string.js');
 
 
 

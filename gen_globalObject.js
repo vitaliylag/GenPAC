@@ -28,7 +28,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 const funcs = require('./lib/funcs.js'),
-      conf = funcs.parseArgs('output-pac/globalObject.js', 'output-js/globalObject.js');
+      conf = funcs.parseArgs('output-pac/globalObject.pac', 'output-js/globalObject.js');
 
 
 
