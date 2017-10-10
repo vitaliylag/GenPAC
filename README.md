@@ -59,7 +59,7 @@ Actually "gen_binSearch_strings_good.js" generator is recommended.
 
 # Benchmark
 
-You can benchmark any PAC files not only created by this generators.
+You can benchmark any PAC files (not only created by this generators).
 
 ## Running
 `node --expose-gc bench PATH`<br>
