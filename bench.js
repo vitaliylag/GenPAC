@@ -93,15 +93,15 @@ setTimeout(startTest, 1, PATH, false);
 
 
 
-function startTest(path, alreadyConvertedToJs) {
+function startTest(path, isConvertedToJs) {
 	const startMem = memoryUsage();
 	const startTime = performance.now();
 	
 	const FindProxyForURL = requireScript(path);
 	if (typeof FindProxyForURL !== 'function') {
-		return convertToScript_andRestartTest(path, alreadyConvertedToJs);
+		return convertToScript_andRestartTest(path, isConvertedToJs);
 	}
-	if (alreadyConvertedToJs) {
+	if (isConvertedToJs) {
 		fs.unlink(path, e => e && console.log('Warning: cannot delete temp file: ' + path));
 	}
 	
@@ -154,9 +154,9 @@ function requireScript(path) {
 
 
 
-function convertToScript_andRestartTest(path, alreadyConvertedToJs) {
-	if (alreadyConvertedToJs) {
-		return printErrorAndExit('Cannot use js-version of file. Try to add "module.exports = FindProxyForURL;" to the end of the file.');
+function convertToScript_andRestartTest(path, isConvertedToJs) {
+	if (isConvertedToJs) {
+		return printErrorAndExit('Error while trying use PAC file after convering it to JS file. Try to add "module.exports = FindProxyForURL;" to the end of the PAC file.');
 	}
 	fs = require('fs');
 	
