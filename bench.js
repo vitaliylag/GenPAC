@@ -23,24 +23,12 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 
-/*
-Benchmark.
-
-Launch:
-node --expose-gc bench
-node --expose-gc bench AntiZapret
-node --expose-gc --noopt --no-always-opt bench
-node --expose-gc --noopt --no-always-opt bench AntiZapret
-*/
-
-
-
 'use strict';
 
 
 
 /*
-Code map:
+Contents:
 1. Consts
 2. Polyfills
 3. Body
