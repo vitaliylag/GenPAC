@@ -4,6 +4,11 @@
 `node gen_array --help`<br>
 `node gen_binSearch_strings_good`<br>
 
+### Full steps
+1. `git clone https://github.com/vitaliylag/GenPAC.git`
+2. `cd <created_dir>`
+3. Use commands listed above. Resulting files will be created in "output-js" and "output-pac" directories. You should have node.js installed.
+
 
 
 # Description
@@ -29,7 +34,7 @@ There is few scripts generating PAC files. Resulting PAC files do the same thing
 ways so they have different performance. You can choose generator that makes PAC file with best
 performance.
 
-- `gen_array.js`                  just loop over array
+- `gen_array.js`                  just loops over array
 - `gen_array2.js`                 the same but without functions and breaking loops
 - `gen_globalObject.js`           using global object as hashmap
 - `gen_binSearch_array.js`        bin-search over array
@@ -51,6 +56,16 @@ Actually "gen_binSearch_strings_good.js" generator is recommended.
 
 # Benchmark
 
+You can benchmark any PAC files not only created by this generators.
+
 ## Running
-`node --expose-gc bench output-js/array`<br>
-`node --expose-gc --noopt --no-always-opt bench output-js/array`<br>
+`node --expose-gc bench PATH`<br>
+`node --expose-gc --noopt --no-always-opt bench PATH`<br>
+
+Example:
+`node --expose-gc bench output-js/array`
+
+### Full steps
+1. `git clone https://github.com/vitaliylag/GenPAC.git`
+2. `cd <created_dir>`
+3. Use commands listed above.

@@ -49,6 +49,10 @@ Code map:
 
 
 
+let fs;
+
+
+
 //=== Consts ===
 
 
@@ -93,22 +97,26 @@ let canMesureMem = true;
 
 
 if (!PATH) {
-	return console.log('Usage: node bench PATH');
-}
-
-try {
-	require('./' + PATH);
-} catch(e) {
-	return console.log('Cannot use ' + PATH + ' file');
+	return printErrorAndExit('Usage: node bench PATH');
 }
 
 gc();
+setTimeout(startTest, 1, PATH, false);
 
-setTimeout(() => {
+
+
+function startTest(path, alreadyConvertedToJs) {
 	const startMem = memoryUsage();
 	const startTime = performance.now();
 	
-	const FindProxyForURL = require('./' + PATH);
+	const FindProxyForURL = requireScript(path);
+	if (typeof FindProxyForURL !== 'function') {
+		return convertToScript_andRestartTest(path, alreadyConvertedToJs);
+	}
+	if (alreadyConvertedToJs) {
+		fs.unlink(path, e => e && console.log('Warning: cannot delete temp file: ' + path));
+	}
+	
 	let ans = FindProxyForURL('http://a.example.com/', `${HOST_PREFIX}.com`);
 	let ansLen = ans.length;
 	const time0 = performance.now();
@@ -119,9 +127,64 @@ setTimeout(() => {
 	for (let i = TIMES3; i < TIMES4; i++)  { ans = FindProxyForURL('http://a.example1.com/', `${HOST_PREFIX}${i}.com`);   ansLen += ans.length; }   const time4 = performance.now();
 	
 	const mem = memoryUsage(startMem);
-	if (true)         console.log(`${getHumanTime(time0 - startTime, 1, 1)} / ${getHumanTime(time1 - time0, TIMES1)} / ${getHumanTime(time2 - time0, TIMES2)} / ${getHumanTime(time3 - time0, TIMES3)} / ${getHumanTime(time4 - time0, TIMES4)}   ${ans}   ${ansLen}`);
-	if (canMesureMem) console.log(`rss: ${getHumanMem(mem.rss)}, heapTotal: ${getHumanMem(mem.heapTotal)}, heapUsed: ${getHumanMem(mem.heapUsed)}`);
-}, 1);
+	console.log(`
+		Results:
+		
+		Require and first launch:                ${getHumanTime(time0 - startTime, 1, 1)}
+		${TIMES1.toString().padEnd(5)} launches (excluding first launch): ${getHumanTime(time1 - time0, TIMES1)}
+		${TIMES2.toString().padEnd(5)} launches (excluding first launch): ${getHumanTime(time2 - time0, TIMES2)}
+		${TIMES3.toString().padEnd(5)} launches (excluding first launch): ${getHumanTime(time3 - time0, TIMES3)}
+		${TIMES4.toString().padEnd(5)} launches (excluding first launch): ${getHumanTime(time4 - time0, TIMES4)}
+	`.trim().replace(/\t+/g, ''));
+	
+	console.log(`\nShort format: ${getHumanTime(time0 - startTime, 1, 1)} / ${getHumanTime(time1 - time0, TIMES1)} / ${getHumanTime(time2 - time0, TIMES2)} / ${getHumanTime(time3 - time0, TIMES3)} / ${getHumanTime(time4 - time0, TIMES4)}   (ans = ${ans}, ansLen = ${ansLen})`);
+	if (canMesureMem) {
+		console.log(`rss: ${getHumanMem(mem.rss)}, heapTotal: ${getHumanMem(mem.heapTotal)}, heapUsed: ${getHumanMem(mem.heapUsed)}`);
+	}else{
+		console.log('Memory is not measured. Use "node --expose-gc bench" to measure memory');
+	}
+}
+
+
+
+function requireScript(path) {
+	try {
+		return require('./' + path);
+	} catch(e) {
+		try {
+			require('fs').readFileSync(path);
+		} catch(e) {
+			return printErrorAndExit('Cannot read ' + path + ' file. File does not exist or you have no permissions.');
+		}
+		return printErrorAndExit('Cannot use ' + path + ' file because it contains errors.');
+	}
+}
+
+
+
+function convertToScript_andRestartTest(path, alreadyConvertedToJs) {
+	if (alreadyConvertedToJs) {
+		return printErrorAndExit('Cannot use js-version of file. Try to add "module.exports = FindProxyForURL;" to the end of the file.');
+	}
+	fs = require('fs');
+	
+	let s;
+	try {
+		s = fs.readFileSync(path).toString();
+	} catch(e) {
+		return printErrorAndExit('Cannot read ' + path + ' file. File does not exist or you have no permissions.');
+	}
+	
+	const path_tmp = path + '.vitaliylag_genPAC_bench.' + Date.now() + '.tmp';
+	try {
+		fs.writeFileSync(path_tmp, s + ';\n\n\nmodule.exports = FindProxyForURL;\n');
+	} catch(e) {
+		return printErrorAndExit('Cannot write temp file. Try to add "module.exports = FindProxyForURL;" to the end of the testing file.');
+	}
+	
+	gc();
+	setTimeout(startTest, 1, path_tmp, true);
+}
 
 
 
@@ -146,4 +209,9 @@ function getHumanMem(bytes) {
 
 function getHumanTime(time, times, pres = 3) {
 	return (time / times).toFixed(pres) + ' ms';
+}
+
+function printErrorAndExit(...args) {
+	console.log(...args);
+	process.exit(0);
 }
