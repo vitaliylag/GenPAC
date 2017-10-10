@@ -130,7 +130,7 @@ function startTest(path, alreadyConvertedToJs) {
 	console.log(`
 		Results:
 		
-		Require and first launch:                ${getHumanTime(time0 - startTime, 1, 1)}
+		Parsing and first launch:                ${getHumanTime(time0 - startTime, 1, 1)}
 		${TIMES1.toString().padEnd(5)} launches (excluding first launch): ${getHumanTime(time1 - time0, TIMES1)}
 		${TIMES2.toString().padEnd(5)} launches (excluding first launch): ${getHumanTime(time2 - time0, TIMES2)}
 		${TIMES3.toString().padEnd(5)} launches (excluding first launch): ${getHumanTime(time3 - time0, TIMES3)}
@@ -154,7 +154,11 @@ function requireScript(path) {
 		try {
 			require('fs').readFileSync(path);
 		} catch(e) {
-			return printErrorAndExit('Cannot read ' + path + ' file. File does not exist or you have no permissions.');
+			try {
+				require('fs').readFileSync(path + '.js');
+			} catch(e) {
+				return printErrorAndExit('Cannot read ' + path + ' file. File does not exist or you have no permissions.');
+			}
 		}
 		return printErrorAndExit('Cannot use ' + path + ' file because it contains errors.');
 	}

@@ -66,7 +66,7 @@ You can benchmark any PAC files (not only created by this generators).
 `node --expose-gc --noopt --no-always-opt bench PATH`<br>
 
 Example:
-`node --expose-gc bench output-js/array`
+`node --expose-gc bench output-js/array.js`
 
 ### Full steps
 1. `git clone https://github.com/vitaliylag/GenPAC.git`
