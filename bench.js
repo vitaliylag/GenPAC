@@ -137,11 +137,11 @@ function startTest(path, alreadyConvertedToJs) {
 		${TIMES4.toString().padEnd(5)} launches (excluding first launch): ${getHumanTime(time4 - time0, TIMES4)}
 	`.trim().replace(/\t+/g, ''));
 	
-	console.log(`\nShort format: ${getHumanTime(time0 - startTime, 1, 1)} / ${getHumanTime(time1 - time0, TIMES1)} / ${getHumanTime(time2 - time0, TIMES2)} / ${getHumanTime(time3 - time0, TIMES3)} / ${getHumanTime(time4 - time0, TIMES4)}   (ans = ${ans}, ansLen = ${ansLen})`);
+	console.log(`\nShort format:\n${getHumanTime(time0 - startTime, 1, 1)} / ${getHumanTime(time1 - time0, TIMES1)} / ${getHumanTime(time2 - time0, TIMES2)} / ${getHumanTime(time3 - time0, TIMES3)} / ${getHumanTime(time4 - time0, TIMES4)}   (ans = ${ans}, ansLen = ${ansLen})`);
 	if (canMesureMem) {
-		console.log(`rss: ${getHumanMem(mem.rss)}, heapTotal: ${getHumanMem(mem.heapTotal)}, heapUsed: ${getHumanMem(mem.heapUsed)}`);
+		console.log(`\nrss:       ${getHumanMem(mem.rss)}\nheapTotal: ${getHumanMem(mem.heapTotal)}\nheapUsed:  ${getHumanMem(mem.heapUsed)}`);
 	}else{
-		console.log('Memory is not measured. Use "node --expose-gc bench" to measure memory');
+		console.log('\nMemory is not measured. Use "node --expose-gc bench" to measure memory');
 	}
 }
 
