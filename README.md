@@ -7,7 +7,10 @@
 ### Full steps
 1. `git clone https://github.com/vitaliylag/GenPAC.git`
 2. `cd <created_dir>`
-3. Use commands listed above. Resulting files will be created in "output-js" and "output-pac" directories. You should have node.js installed.
+3. Use commands listed above.
+
+- Resulting files will be created in "output-js" and "output-pac" directories.
+- You should have node.js installed.
 
 
 
